@@ -5,6 +5,7 @@ import com.mamikos.backend.common.ResponseMessage;
 import com.mamikos.backend.dto.InquiryRequest;
 import com.mamikos.backend.dto.InquiryResponse;
 import com.mamikos.backend.service.InquiryService;
+import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -25,7 +26,7 @@ public class InquiryController {
     @PostMapping
     @PreAuthorize("hasAnyRole('REGULAR_USER', 'PREMIUM_USER')")
     public ResponseEntity<BaseResponse<InquiryResponse>> askAvailability(
-            Principal principal,
+            @Parameter(hidden = true) Principal principal,
             @Valid @RequestBody InquiryRequest request) {
         InquiryResponse response = inquiryService.askAvailability(principal.getName(), request);
         return ResponseEntity.status(HttpStatus.CREATED)
@@ -34,7 +35,7 @@ public class InquiryController {
 
     @GetMapping("/my-inquiries")
     @PreAuthorize("hasAnyRole('REGULAR_USER', 'PREMIUM_USER')")
-    public ResponseEntity<BaseResponse<List<InquiryResponse>>> getUserInquiries(Principal principal) {
+    public ResponseEntity<BaseResponse<List<InquiryResponse>>> getUserInquiries(@Parameter(hidden = true) Principal principal) {
         List<InquiryResponse> response = inquiryService.getUserInquiries(principal.getName());
         return ResponseEntity.ok(BaseResponse.success("Inquiries fetched successfully", response));
     }

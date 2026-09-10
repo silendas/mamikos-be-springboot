@@ -12,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 import java.security.Principal;
 import java.util.List;
@@ -26,7 +28,7 @@ public class KostController {
     @PostMapping
     @PreAuthorize("hasRole('OWNER')")
     public ResponseEntity<BaseResponse<KostResponse>> createKost(
-            Principal principal,
+            @Parameter(hidden = true) Principal principal,
             @Valid @RequestBody KostRequest request) {
         KostResponse response = kostService.createKost(principal.getName(), request);
         return ResponseEntity.status(HttpStatus.CREATED)
@@ -36,7 +38,7 @@ public class KostController {
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('OWNER')")
     public ResponseEntity<BaseResponse<KostResponse>> updateKost(
-            Principal principal,
+            @Parameter(hidden = true) Principal principal,
             @PathVariable Long id,
             @Valid @RequestBody KostRequest request) {
         KostResponse response = kostService.updateKost(principal.getName(), id, request);
@@ -46,7 +48,7 @@ public class KostController {
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('OWNER')")
     public ResponseEntity<BaseResponse<Object>> deleteKost(
-            Principal principal,
+            @Parameter(hidden = true) Principal principal,
             @PathVariable Long id) {
         kostService.deleteKost(principal.getName(), id);
         return ResponseEntity.ok(BaseResponse.success(ResponseMessage.KOST_DELETED, null));
@@ -60,7 +62,7 @@ public class KostController {
 
     @GetMapping("/owner/my-kosts")
     @PreAuthorize("hasRole('OWNER')")
-    public ResponseEntity<BaseResponse<List<KostResponse>>> getOwnerKosts(Principal principal) {
+    public ResponseEntity<BaseResponse<List<KostResponse>>> getOwnerKosts(@Parameter(hidden = true) Principal principal) {
         List<KostResponse> response = kostService.getOwnerKosts(principal.getName());
         return ResponseEntity.ok(BaseResponse.success(ResponseMessage.KOST_FETCHED, response));
     }
