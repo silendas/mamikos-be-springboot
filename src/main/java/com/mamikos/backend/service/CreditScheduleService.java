@@ -21,7 +21,7 @@ public class CreditScheduleService {
     private final UserRepository userRepository;
 
     // Runs at 00:00:00 on the 1st day of every month
-    @Scheduled(cron = "0 0 1 1 * ?")
+    @Scheduled(cron = "0 0 0 1 * ?")
     @Transactional
     public void rechargeUserCredits() {
         log.info("Starting monthly credit recharge for users...");
