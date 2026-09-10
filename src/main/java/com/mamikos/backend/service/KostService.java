@@ -3,7 +3,6 @@ package com.mamikos.backend.service;
 import com.mamikos.backend.common.ResponseMessage;
 import com.mamikos.backend.dto.KostRequest;
 import com.mamikos.backend.dto.KostResponse;
-import com.mamikos.backend.exception.BadRequestException;
 import com.mamikos.backend.exception.ResourceNotFoundException;
 import com.mamikos.backend.exception.UnauthorizedException;
 import com.mamikos.backend.model.Kost;
@@ -145,3 +144,4 @@ public class KostService {
                 .build();
     }
 }
+
