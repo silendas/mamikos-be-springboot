@@ -59,6 +59,16 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 
+    @ExceptionHandler(org.springframework.http.converter.HttpMessageNotReadableException.class)
+    public ResponseEntity<BaseResponse<Object>> handleHttpMessageNotReadableException(org.springframework.http.converter.HttpMessageNotReadableException ex) {
+        String message = "Malformed JSON request or invalid enum value";
+        if (ex.getMessage() != null && ex.getMessage().contains("com.mamikos.backend.model.Role")) {
+            message = "Invalid role. Allowed values: OWNER, REGULAR_USER, PREMIUM_USER";
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(BaseResponse.error(HttpStatus.BAD_REQUEST, message));
+    }
+
     @ExceptionHandler(NullPointerException.class)
     public ResponseEntity<BaseResponse<Object>> handleNullPointerException(NullPointerException ex) {
         if (ex.getMessage() != null && ex.getMessage().contains("java.security.Principal.getName()")) {
