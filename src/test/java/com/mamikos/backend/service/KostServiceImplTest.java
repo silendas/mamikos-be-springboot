@@ -115,6 +115,7 @@ class KostServiceImplTest {
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     void searchKosts_Success() {
         Page<Kost> kostPage = new PageImpl<>(List.of(kost));
         when(kostRepository.findAll(any(Specification.class), any(Pageable.class))).thenReturn(kostPage);
