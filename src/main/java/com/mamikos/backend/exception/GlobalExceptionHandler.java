@@ -3,6 +3,8 @@ package com.mamikos.backend.exception;
 import com.mamikos.backend.common.BaseResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -30,6 +32,12 @@ public class GlobalExceptionHandler {
     public ResponseEntity<BaseResponse<Object>> handleUnauthorizedException(UnauthorizedException ex) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                 .body(BaseResponse.error(ex.getMessage()));
+    }
+
+    @ExceptionHandler({BadCredentialsException.class, AuthenticationException.class})
+    public ResponseEntity<BaseResponse<Object>> handleAuthenticationException(Exception ex) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(BaseResponse.error("Invalid username or password"));
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

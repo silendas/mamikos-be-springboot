@@ -111,5 +111,24 @@ class AuthControllerTest {
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.data.accessToken").value("token123"));
     }
+
+    @Test
+    void login_BadCredentials_ReturnsUnauthorized() throws Exception {
+        LoginRequest request = new LoginRequest();
+        request.setUsernameOrEmail("testuser");
+        request.setPassword("wrongpassword");
+
+        when(authService.login(any(LoginRequest.class)))
+                .thenThrow(new org.springframework.security.authentication.BadCredentialsException("Bad credentials"));
+
+        mockMvc.perform(post("/api/auth/login")
+                        .with(csrf())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("$.success").value(false))
+                .andExpect(jsonPath("$.message").value("Invalid username or password"));
+    }
+
 }
 
