@@ -4,6 +4,10 @@ import com.mamikos.backend.common.ResponseMessage;
 import com.mamikos.backend.dto.AuthResponse;
 import com.mamikos.backend.dto.LoginRequest;
 import com.mamikos.backend.dto.RegisterRequest;
+import com.mamikos.backend.dto.UserProfileResponse;
+import com.mamikos.backend.dto.UpdateProfileRequest;
+import com.mamikos.backend.dto.ChangePasswordRequest;
+
 import com.mamikos.backend.exception.BadRequestException;
 import com.mamikos.backend.model.Role;
 import com.mamikos.backend.model.User;
@@ -71,6 +75,59 @@ public class AuthServiceImpl implements AuthService {
                 .email(savedUser.getEmail())
                 .role(savedUser.getRole())
                 .credits(savedUser.getCredits())
+                .build();
+    }
+
+    @Override
+    public UserProfileResponse getMyProfile(String username) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new BadRequestException(ResponseMessage.USER_NOT_FOUND));
+        return mapToUserProfileResponse(user);
+    }
+
+    @Override
+    @Transactional
+    public UserProfileResponse updateProfile(String username, UpdateProfileRequest request) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new BadRequestException(ResponseMessage.USER_NOT_FOUND));
+
+        if (!user.getUsername().equals(request.getUsername()) && userRepository.existsByUsername(request.getUsername())) {
+            throw new BadRequestException(ResponseMessage.USERNAME_ALREADY_EXISTS);
+        }
+        if (!user.getEmail().equals(request.getEmail()) && userRepository.existsByEmail(request.getEmail())) {
+            throw new BadRequestException(ResponseMessage.EMAIL_ALREADY_EXISTS);
+        }
+
+        user.setUsername(request.getUsername());
+        user.setEmail(request.getEmail());
+
+        User updatedUser = userRepository.save(user);
+        return mapToUserProfileResponse(updatedUser);
+    }
+
+    @Override
+    @Transactional
+    public void changePassword(String username, ChangePasswordRequest request) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new BadRequestException(ResponseMessage.USER_NOT_FOUND));
+
+        if (!passwordEncoder.matches(request.getCurrentPassword(), user.getPassword())) {
+            throw new BadRequestException(ResponseMessage.INCORRECT_CURRENT_PASSWORD);
+        }
+
+        user.setPassword(passwordEncoder.encode(request.getNewPassword()));
+        userRepository.save(user);
+    }
+
+    private UserProfileResponse mapToUserProfileResponse(User user) {
+        return UserProfileResponse.builder()
+                .id(user.getId())
+                .username(user.getUsername())
+                .email(user.getEmail())
+                .role(user.getRole())
+                .credits(user.getCredits())
+                .createdAt(user.getCreatedAt())
+                .updatedAt(user.getUpdatedAt())
                 .build();
     }
 

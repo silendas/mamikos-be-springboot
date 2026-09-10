@@ -1,5 +1,10 @@
 package com.mamikos.backend.controller;
 
+import com.mamikos.backend.dto.UserProfileResponse;
+import com.mamikos.backend.dto.UpdateProfileRequest;
+import com.mamikos.backend.dto.ChangePasswordRequest;
+import static org.mockito.Mockito.doNothing;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mamikos.backend.dto.AuthResponse;
 import com.mamikos.backend.dto.LoginRequest;
@@ -128,6 +133,63 @@ class AuthControllerTest {
                 .andExpect(status().isUnauthorized())
                 .andExpect(jsonPath("$.success").value(false))
                 .andExpect(jsonPath("$.message").value("Invalid username or password"));
+    }
+
+    @Test
+    void getMyProfile_Success() throws Exception {
+        UserProfileResponse profileResponse = UserProfileResponse.builder()
+                .id(1L)
+                .username("testuser")
+                .email("test@mamikos.com")
+                .role(Role.REGULAR_USER)
+                .credits(20)
+                .build();
+
+        when(authService.getMyProfile(any())).thenReturn(profileResponse);
+
+        mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get("/api/auth/me")
+                        .principal(() -> "testuser"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.success").value(true))
+                .andExpect(jsonPath("$.data.username").value("testuser"));
+    }
+
+    @Test
+    void updateProfile_Success() throws Exception {
+        UpdateProfileRequest updateRequest = new UpdateProfileRequest("newusername", "new@mamikos.com");
+        UserProfileResponse profileResponse = UserProfileResponse.builder()
+                .id(1L)
+                .username("newusername")
+                .email("new@mamikos.com")
+                .role(Role.REGULAR_USER)
+                .credits(20)
+                .build();
+
+        when(authService.updateProfile(any(), any(UpdateProfileRequest.class))).thenReturn(profileResponse);
+
+        mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put("/api/auth/me")
+                        .principal(() -> "testuser")
+                        .with(csrf())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(updateRequest)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.success").value(true))
+                .andExpect(jsonPath("$.data.username").value("newusername"));
+    }
+
+    @Test
+    void changePassword_Success() throws Exception {
+        ChangePasswordRequest changePasswordRequest = new ChangePasswordRequest("password123", "newpassword123");
+
+        doNothing().when(authService).changePassword(any(), any(ChangePasswordRequest.class));
+
+        mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put("/api/auth/password")
+                        .principal(() -> "testuser")
+                        .with(csrf())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(changePasswordRequest)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.success").value(true));
     }
 
 }
