@@ -1,5 +1,7 @@
 package com.mamikos.backend.exception;
 
+import com.mamikos.backend.common.ResponseMessage;
+
 import com.mamikos.backend.common.BaseResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
