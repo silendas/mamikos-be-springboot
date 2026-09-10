@@ -115,5 +115,22 @@ class KostControllerTest {
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.data.content[0].name").value("Kost Mawar"));
     }
+    @Test
+    void createKost_InvalidInput_ReturnsBadRequest() throws Exception {
+        KostRequest request = new KostRequest();
+        request.setName("");
+        request.setLocation("");
+        request.setPrice(-100.0);
+        request.setRoomCount(0);
+
+        mockMvc.perform(post("/api/kosts")
+                        .principal(() -> "owner1")
+                        .with(csrf())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.success").value(false));
+    }
+
 }
 

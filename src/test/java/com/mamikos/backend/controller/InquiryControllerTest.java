@@ -90,5 +90,20 @@ class InquiryControllerTest {
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.data[0].id").value(1L));
     }
+    @Test
+    void askAvailability_InvalidInput_ReturnsBadRequest() throws Exception {
+        InquiryRequest request = new InquiryRequest();
+        request.setKostId(null);
+        request.setMessage("");
+
+        mockMvc.perform(post("/api/inquiries")
+                        .principal(() -> "user1")
+                        .with(csrf())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.success").value(false));
+    }
+
 }
 
