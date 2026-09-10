@@ -85,10 +85,10 @@ mvnw.cmd clean install
 ### 5. Run the Application
 ```bash
 # Windows
-mvnw.cmd spring-boot:run
+mvn spring-boot:run
 
 # Linux / macOS
-./mvnw spring-boot:run
+mvn spring-boot:run
 ```
 
 The application will start at `http://localhost:8080`.
