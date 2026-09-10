@@ -39,6 +39,6 @@ public class InquiryController {
     @PreAuthorize("hasAnyRole('REGULAR_USER', 'PREMIUM_USER')")
     public ResponseEntity<BaseResponse<List<InquiryResponse>>> getUserInquiries(@Parameter(hidden = true) Principal principal) {
         List<InquiryResponse> response = inquiryService.getUserInquiries(principal.getName());
-        return ResponseEntity.ok(BaseResponse.success("Inquiries fetched successfully", response));
+        return ResponseEntity.ok(BaseResponse.success(ResponseMessage.INQUIRIES_FETCHED, response));
     }
 }

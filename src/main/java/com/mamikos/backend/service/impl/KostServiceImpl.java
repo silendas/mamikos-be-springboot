@@ -42,7 +42,7 @@ public class KostServiceImpl implements KostService {
                 .orElseThrow(() -> new ResourceNotFoundException(ResponseMessage.USER_NOT_FOUND));
 
         if (owner.getRole() != Role.OWNER) {
-            throw new UnauthorizedException("Only owners can add kosts");
+            throw new UnauthorizedException(ResponseMessage.ONLY_OWNERS_CAN_ADD_KOSTS);
         }
 
         Kost kost = kostMapper.toEntity(request, owner);
@@ -56,7 +56,7 @@ public class KostServiceImpl implements KostService {
                 .orElseThrow(() -> new ResourceNotFoundException(ResponseMessage.KOST_NOT_FOUND));
 
         if (!kost.getOwner().getUsername().equals(username)) {
-            throw new UnauthorizedException("You are not the owner of this kost");
+            throw new UnauthorizedException(ResponseMessage.NOT_KOST_OWNER);
         }
 
         kost.setName(request.getName());
@@ -75,7 +75,7 @@ public class KostServiceImpl implements KostService {
                 .orElseThrow(() -> new ResourceNotFoundException(ResponseMessage.KOST_NOT_FOUND));
 
         if (!kost.getOwner().getUsername().equals(username)) {
-            throw new UnauthorizedException("You are not the owner of this kost");
+            throw new UnauthorizedException(ResponseMessage.NOT_KOST_OWNER);
         }
 
         kostRepository.delete(kost);
