@@ -6,6 +6,7 @@ import com.mamikos.backend.dto.AuthResponse;
 import com.mamikos.backend.dto.LoginRequest;
 import com.mamikos.backend.dto.RegisterRequest;
 import com.mamikos.backend.service.AuthService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
+@Tag(name = "Authentication", description = "Authentication management APIs (Register & Login)")
 public class AuthController {
 
     private final AuthService authService;

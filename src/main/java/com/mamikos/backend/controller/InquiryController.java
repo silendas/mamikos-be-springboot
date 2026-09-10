@@ -6,6 +6,7 @@ import com.mamikos.backend.dto.InquiryRequest;
 import com.mamikos.backend.dto.InquiryResponse;
 import com.mamikos.backend.service.InquiryService;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/inquiries")
 @RequiredArgsConstructor
+@Tag(name = "Inquiry", description = "Room availability inquiry and user credit consumption APIs")
 public class InquiryController {
 
     private final InquiryService inquiryService;

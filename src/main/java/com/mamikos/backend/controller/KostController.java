@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 import java.security.Principal;
 import java.util.List;
@@ -20,6 +21,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/kosts")
 @RequiredArgsConstructor
+@Tag(name = "Kost Management", description = "Kost management and search APIs for owners and public users")
 public class KostController {
 
     private final KostService kostService;
