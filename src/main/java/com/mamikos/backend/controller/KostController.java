@@ -4,6 +4,7 @@ import com.mamikos.backend.common.BaseResponse;
 import com.mamikos.backend.common.ResponseMessage;
 import com.mamikos.backend.dto.KostRequest;
 import com.mamikos.backend.dto.KostResponse;
+import com.mamikos.backend.dto.PageResponse;
 import com.mamikos.backend.service.KostService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -65,13 +66,15 @@ public class KostController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<BaseResponse<List<KostResponse>>> searchKosts(
+    public ResponseEntity<BaseResponse<PageResponse<KostResponse>>> searchKosts(
             @RequestParam(required = false) String name,
             @RequestParam(required = false) String location,
             @RequestParam(required = false) Double minPrice,
             @RequestParam(required = false) Double maxPrice,
-            @RequestParam(required = false) String sort) {
-        List<KostResponse> response = kostService.searchKosts(name, location, minPrice, maxPrice, sort);
+            @RequestParam(required = false) String sort,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        PageResponse<KostResponse> response = kostService.searchKosts(name, location, minPrice, maxPrice, sort, page, size);
         return ResponseEntity.ok(BaseResponse.success(ResponseMessage.KOST_FETCHED, response));
     }
 }
