@@ -52,6 +52,7 @@ public class InquiryServiceImpl implements InquiryService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<InquiryResponse> getUserInquiries(String username) {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new ResourceNotFoundException(ResponseMessage.USER_NOT_FOUND));
