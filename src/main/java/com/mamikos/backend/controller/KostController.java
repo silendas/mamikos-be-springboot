@@ -33,7 +33,7 @@ public class KostController {
             @Valid @RequestBody KostRequest request) {
         KostResponse response = kostService.createKost(principal.getName(), request);
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(BaseResponse.success(ResponseMessage.KOST_CREATED, response));
+                .body(BaseResponse.success(HttpStatus.CREATED, ResponseMessage.KOST_CREATED, response));
     }
 
     @PutMapping("/{id}")
@@ -43,7 +43,7 @@ public class KostController {
             @PathVariable Long id,
             @Valid @RequestBody KostRequest request) {
         KostResponse response = kostService.updateKost(principal.getName(), id, request);
-        return ResponseEntity.ok(BaseResponse.success(ResponseMessage.KOST_UPDATED, response));
+        return ResponseEntity.ok(BaseResponse.success(HttpStatus.OK, ResponseMessage.KOST_UPDATED, response));
     }
 
     @DeleteMapping("/{id}")
@@ -52,20 +52,20 @@ public class KostController {
             @Parameter(hidden = true) Principal principal,
             @PathVariable Long id) {
         kostService.deleteKost(principal.getName(), id);
-        return ResponseEntity.ok(BaseResponse.success(ResponseMessage.KOST_DELETED, null));
+        return ResponseEntity.ok(BaseResponse.success(HttpStatus.OK, ResponseMessage.KOST_DELETED, null));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<BaseResponse<KostResponse>> getKostById(@PathVariable Long id) {
         KostResponse response = kostService.getKostById(id);
-        return ResponseEntity.ok(BaseResponse.success(ResponseMessage.KOST_FETCHED, response));
+        return ResponseEntity.ok(BaseResponse.success(HttpStatus.OK, ResponseMessage.KOST_FETCHED, response));
     }
 
     @GetMapping("/owner/my-kosts")
     @PreAuthorize("hasRole('OWNER')")
     public ResponseEntity<BaseResponse<List<KostResponse>>> getOwnerKosts(@Parameter(hidden = true) Principal principal) {
         List<KostResponse> response = kostService.getOwnerKosts(principal.getName());
-        return ResponseEntity.ok(BaseResponse.success(ResponseMessage.KOST_FETCHED, response));
+        return ResponseEntity.ok(BaseResponse.success(HttpStatus.OK, ResponseMessage.KOST_FETCHED, response));
     }
 
     @GetMapping("/search")
@@ -78,7 +78,7 @@ public class KostController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
         PageResponse<KostResponse> response = kostService.searchKosts(name, location, minPrice, maxPrice, sort, page, size);
-        return ResponseEntity.ok(BaseResponse.success(ResponseMessage.KOST_FETCHED, response));
+        return ResponseEntity.ok(BaseResponse.success(HttpStatus.OK, ResponseMessage.KOST_FETCHED, response));
     }
 }
 

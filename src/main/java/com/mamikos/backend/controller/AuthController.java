@@ -28,18 +28,18 @@ public class AuthController {
     public ResponseEntity<BaseResponse<AuthResponse>> register(@Valid @RequestBody RegisterRequest request) {
         AuthResponse response = authService.register(request);
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(BaseResponse.success(ResponseMessage.REGISTER_SUCCESS, response));
+                .body(BaseResponse.success(HttpStatus.CREATED, ResponseMessage.REGISTER_SUCCESS, response));
     }
 
     @PostMapping("/login")
     public ResponseEntity<BaseResponse<AuthResponse>> login(@Valid @RequestBody LoginRequest request) {
         AuthResponse response = authService.login(request);
-        return ResponseEntity.ok(BaseResponse.success(ResponseMessage.LOGIN_SUCCESS, response));
+        return ResponseEntity.ok(BaseResponse.success(HttpStatus.OK, ResponseMessage.LOGIN_SUCCESS, response));
     }
     @GetMapping("/me")
     public ResponseEntity<BaseResponse<UserProfileResponse>> getMyProfile(Principal principal) {
         UserProfileResponse response = authService.getMyProfile(principal.getName());
-        return ResponseEntity.ok(BaseResponse.success(ResponseMessage.USER_PROFILE_FETCHED, response));
+        return ResponseEntity.ok(BaseResponse.success(HttpStatus.OK, ResponseMessage.USER_PROFILE_FETCHED, response));
     }
 
     @PutMapping("/me")
@@ -47,7 +47,7 @@ public class AuthController {
             Principal principal,
             @Valid @RequestBody UpdateProfileRequest request) {
         UserProfileResponse response = authService.updateProfile(principal.getName(), request);
-        return ResponseEntity.ok(BaseResponse.success(ResponseMessage.USER_PROFILE_UPDATED, response));
+        return ResponseEntity.ok(BaseResponse.success(HttpStatus.OK, ResponseMessage.USER_PROFILE_UPDATED, response));
     }
 
     @PutMapping("/password")
@@ -55,7 +55,7 @@ public class AuthController {
             Principal principal,
             @Valid @RequestBody ChangePasswordRequest request) {
         authService.changePassword(principal.getName(), request);
-        return ResponseEntity.ok(BaseResponse.success(ResponseMessage.PASSWORD_CHANGED, null));
+        return ResponseEntity.ok(BaseResponse.success(HttpStatus.OK, ResponseMessage.PASSWORD_CHANGED, null));
     }
 
 }
