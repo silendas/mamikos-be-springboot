@@ -58,9 +58,19 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 
+    @ExceptionHandler(NullPointerException.class)
+    public ResponseEntity<BaseResponse<Object>> handleNullPointerException(NullPointerException ex) {
+        if (ex.getMessage() != null && ex.getMessage().contains("java.security.Principal.getName()")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(BaseResponse.error("Authentication required: unauthorized or missing token"));
+        }
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(BaseResponse.error("Internal server error"));
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<BaseResponse<Object>> handleGlobalException(Exception ex) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(BaseResponse.error("Internal server error: " + ex.getMessage()));
+                .body(BaseResponse.error("Internal server error"));
     }
 }
