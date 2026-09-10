@@ -73,13 +73,9 @@ spring.datasource.password=your_password
 ```
 
 ### 4. Build the Application
-Using Maven Wrapper (`mvnw` on Linux/macOS, `mvnw.cmd` on Windows):
+Using Maven:
 ```bash
-# Windows
-mvnw.cmd clean install
-
-# Linux / macOS
-./mvnw clean install
+mvn clean install
 ```
 
 ### 5. Run the Application
