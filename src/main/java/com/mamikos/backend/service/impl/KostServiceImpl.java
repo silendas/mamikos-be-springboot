@@ -82,6 +82,7 @@ public class KostServiceImpl implements KostService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public KostResponse getKostById(Long kostId) {
         Kost kost = kostRepository.findById(kostId)
                 .orElseThrow(() -> new ResourceNotFoundException(ResponseMessage.KOST_NOT_FOUND));
@@ -89,6 +90,7 @@ public class KostServiceImpl implements KostService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<KostResponse> getOwnerKosts(String username) {
         User owner = userRepository.findByUsername(username)
                 .orElseThrow(() -> new ResourceNotFoundException(ResponseMessage.USER_NOT_FOUND));
@@ -99,6 +101,7 @@ public class KostServiceImpl implements KostService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public PageResponse<KostResponse> searchKosts(String name, String location, Double minPrice, Double maxPrice, String sortDirection, int page, int size) {
         Specification<Kost> spec = (root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
