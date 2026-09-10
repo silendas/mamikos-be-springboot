@@ -1,0 +1,22 @@
+# .clinerules - Mamikos Backend Spring Boot
+
+## Architecture & Package Structure
+- Use modular Layered / Clean Architecture under `com.mamikos.backend`:
+  - `controller`: REST endpoints, request handling, input validation (`@Valid`).
+  - `service`: Business logic implementations.
+  - `repository`: Spring Data JPA repositories.
+  - `model`: JPA Entities (extending `BaseEntity` with `createdAt`, `updatedAt`).
+  - `dto`: Request and Response Data Transfer Objects.
+  - `common`: Shared utilities, `BaseResponse`, `BaseEntity`, and message constants (`AppConstants` / `ResponseMessage`).
+  - `security`: Spring Security configuration, JWT filter, JwtTokenProvider, CustomUserDetailsService.
+  - `exception`: Global exception handler (`@ControllerAdvice`) and custom exceptions.
+  - `schedule`: `@Scheduled` tasks (e.g. monthly credit recharge).
+
+## Coding Standards & Best Practices
+- **SOLID Principles & Clean Code**: Single responsibility, dependency injection via constructor (`@RequiredArgsConstructor`), no field injection.
+- **Validation**: Use Jakarta Bean Validation (`@NotNull`, `@NotBlank`, `@Email`, etc.) on DTOs.
+- **Exception Handling**: Uniform error responses using `BaseResponse`.
+
+## Git Commit Policy (Strict)
+- Commit **every single change** (feature, refactor, bug fix, test, chore) immediately with clear, descriptive commit messages conforming to Conventional Commits format (`feat: ...`, `fix: ...`, `refactor: ...`, `test: ...`, `chore: ...`).
+- Never bundle unrelated changes into a single big commit.
