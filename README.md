@@ -2,7 +2,24 @@
 
 Production-ready Spring Boot backend for the Mamikos Technical Test.
 
-## Features & Requirements Implemented
+---
+
+## 🛠️ Tech Stack & Versions
+
+| Technology | Version | Description |
+| :--- | :--- | :--- |
+| **Java** | `21` | Programming Language |
+| **Spring Boot** | `3.3.0` | Backend Framework |
+| **Spring Security** | `6.3.0` | Authentication & Authorization |
+| **Spring Data JPA** | `3.3.0` | ORM / Database Access |
+| **JJWT (JSON Web Token)** | `0.12.5` | Token-based Auth |
+| **SpringDoc OpenAPI** | `2.5.0` | API Documentation & Swagger UI |
+| **PostgreSQL** | Latest | Relational Database |
+| **Maven** | `3.8+` | Build Tool & Dependency Management |
+
+---
+
+## 📋 Features & Requirements Implemented
 1. **User Roles & Credits**:
    - `REGULAR_USER`: Gets 20 initial credits.
    - `PREMIUM_USER`: Gets 40 initial credits.
@@ -26,32 +43,66 @@ Production-ready Spring Boot backend for the Mamikos Technical Test.
 
 ---
 
-## Prerequisites
-- Java 21+
-- Maven 3.8+
-- PostgreSQL Database
+## ⚙️ Prerequisites
+- **Java JDK 21** installed (`java -version`)
+- **Maven 3.8+** (or use included Maven Wrapper `mvnw`)
+- **PostgreSQL Database** running locally or remotely
 
 ---
 
-## Configuration
-Update database credentials in `src/main/resources/application.properties`:
+## 🚀 Step-by-Step Installation & Running Guide
+
+### 1. Clone the Repository
+```bash
+git clone https://github.com/your-username/mamikos-be-springboot.git
+cd mamikos-be-springboot
+```
+
+### 2. Setup PostgreSQL Database
+Create a PostgreSQL database named `mamikos_db`:
+```sql
+CREATE DATABASE mamikos_db;
+```
+
+### 3. Configure Database Credentials
+Edit `src/main/resources/application.properties` (or profile configuration) to match your local PostgreSQL credentials:
 ```properties
 spring.datasource.url=jdbc:postgresql://localhost:5432/mamikos_db
 spring.datasource.username=postgres
-spring.datasource.password=postgres
+spring.datasource.password=your_password
 ```
 
----
-
-## Build & Run
+### 4. Build the Application
+Using Maven Wrapper (`mvnw` on Linux/macOS, `mvnw.cmd` on Windows):
 ```bash
-mvn clean install
-mvn spring-boot:run
+# Windows
+mvnw.cmd clean install
+
+# Linux / macOS
+./mvnw clean install
 ```
+
+### 5. Run the Application
+```bash
+# Windows
+mvnw.cmd spring-boot:run
+
+# Linux / macOS
+./mvnw spring-boot:run
+```
+
+The application will start at `http://localhost:8080`.
 
 ---
 
-## API Endpoints Documentation
+## 📖 API Documentation & Swagger UI
+Interactive API documentation is available via Swagger UI once the application is running:
+- **Swagger UI**: [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
+- **OpenAPI JSON**: `http://localhost:8080/v3/api-docs`
+
+---
+
+## 🧪 API Endpoints Reference
 
 ### 1. Auth API (`/api/auth`)
 - **Register**: `POST /api/auth/register`
@@ -97,3 +148,4 @@ mvn spring-boot:run
   }
   ```
 - **User Inquiries**: `GET /api/inquiries/my-inquiries`
+
