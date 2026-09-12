@@ -58,18 +58,25 @@ git clone https://github.com/your-username/mamikos-be-springboot.git
 cd mamikos-be-springboot
 ```
 
-### 2. Setup PostgreSQL Database
+### 2. Environment Configuration
+Copy `.env.example` to `.env` and configure your database and JWT credentials:
+```bash
+cp .env.example .env
+```
+
+Configure your credentials in `.env`:
+```env
+DB_URL=jdbc:postgresql://localhost:5432/mamikos_db
+DB_USERNAME=postgres
+DB_PASSWORD=your_password
+JWT_SECRET=dGhpcy1pcy1hLXZlcnktc2VjdXJlLWFuZC1sb25nLXNlY3JldC1rZXktZm9yLWp3dC1hdXRoZW50aWNhdGlvbi1wdXJwb3Nlcy1hdC1sZWFzdC1zaXh0eS1mb3VyLWJ5dGVz
+JWT_EXPIRATION=86400000
+```
+
+### 3. Setup PostgreSQL Database
 Create a PostgreSQL database named `mamikos_db`:
 ```sql
 CREATE DATABASE mamikos_db;
-```
-
-### 3. Configure Database Credentials
-Edit `src/main/resources/application.properties` (or profile configuration) to match your local PostgreSQL credentials:
-```properties
-spring.datasource.url=jdbc:postgresql://localhost:5432/mamikos_db
-spring.datasource.username=postgres
-spring.datasource.password=your_password
 ```
 
 ### 4. Build the Application
@@ -80,10 +87,7 @@ mvn clean install
 
 ### 5. Run the Application
 ```bash
-# Windows
-mvn spring-boot:run
-
-# Linux / macOS
+# Windows / Linux / macOS
 mvn spring-boot:run
 ```
 
@@ -97,6 +101,57 @@ Interactive API documentation is available via Swagger UI once the application i
 - **OpenAPI JSON**: `http://localhost:8080/v3/api-docs`
 
 ---
+
+## 🧪 API Endpoints Reference
+
+### 1. Auth API (`/api/auth`)
+- **Register**: `POST /api/auth/register`
+  ```json
+  {
+    "username": "budi_owner",
+    "email": "budi@owner.com",
+    "password": "password123",
+    "role": "OWNER"
+  }
+  ```
+- **Login**: `POST /api/auth/login`
+  ```json
+  {
+    "usernameOrEmail": "budi_owner",
+    "password": "password123"
+  }
+  ```
+- **Get Profile**: `GET /api/auth/me` (Requires Bearer Token)
+- **Update Profile**: `PUT /api/auth/me` (Requires Bearer Token)
+- **Change Password**: `PUT /api/auth/password` (Requires Bearer Token)
+
+### 2. Kost API (`/api/kosts`)
+- **Create Kost (Owner)**: `POST /api/kosts` (Requires Bearer Token)
+  ```json
+  {
+    "name": "Kost Melati Indah",
+    "location": "Jakarta Selatan",
+    "price": 1500000.0,
+    "description": "Kost nyaman dekat stasiun",
+    "roomCount": 10
+  }
+  ```
+- **Search Kost (Public)**: `GET /api/kosts/search?location=Jakarta&sort=asc`
+- **Kost Detail (Public)**: `GET /api/kosts/{id}`
+- **Owner Kosts**: `GET /api/kosts/owner/my-kosts` (Requires Owner Token)
+- **Update Kost**: `PUT /api/kosts/{id}` (Owner)
+- **Delete Kost**: `DELETE /api/kosts/{id}` (Owner)
+
+### 3. Inquiry API (`/api/inquiries`)
+- **Ask Room Availability (-5 credits)**: `POST /api/inquiries` (Requires Regular/Premium User Token)
+  ```json
+  {
+    "kostId": 1,
+    "message": "Apakah kamar masih tersedia untuk bulan depan?"
+  }
+  ```
+- **User Inquiries**: `GET /api/inquiries/my-inquiries` (Requires Bearer Token)
+
 
 ## 🧪 API Endpoints Reference
 

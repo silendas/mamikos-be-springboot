@@ -5,6 +5,9 @@ target/
 !**/src/test/**/target/
 node_modules/
 
+### Environment Files ###
+.env
+
 ### STS ###
 .apt_generated
 .classpath
@@ -32,3 +35,4 @@ build/
 
 ### VS Code ###
 .vscode/
+
