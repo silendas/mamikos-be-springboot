@@ -59,7 +59,7 @@ cd mamikos-be-springboot
 ```
 
 ### 2. Environment Configuration
-Copy `.env.example` to `.env` and configure your database and JWT credentials:
+Copy `.env.example` to `.env` and configure your local database credentials (e.g. `DB_PASSWORD=admin` or your actual PostgreSQL password):
 ```bash
 cp .env.example .env
 ```
@@ -68,8 +68,10 @@ Configure your credentials in `.env`:
 ```env
 DB_URL=jdbc:postgresql://localhost:5432/mamikos_db
 DB_USERNAME=postgres
-DB_PASSWORD=your_password
-JWT_SECRET=dGhpcy1pcy1hLXZlcnktc2VjdXJlLWFuZC1sb25nLXNlY3JldC1rZXktZm9yLWp3dC1hdXRoZW50aWNhdGlvbi1wdXJwb3Nlcy1hdC1sZWFzdC1zaXh0eS1mb3VyLWJ5dGVz
+DB_PASSWORD=admin
+DB_DDL_AUTO=update
+DB_SHOW_SQL=true
+JWT_SECRET=404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
 JWT_EXPIRATION=86400000
 ```
 
@@ -151,6 +153,7 @@ Interactive API documentation is available via Swagger UI once the application i
   }
   ```
 - **User Inquiries**: `GET /api/inquiries/my-inquiries` (Requires Bearer Token)
+
 
 
 ## 🧪 API Endpoints Reference
