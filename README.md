@@ -97,6 +97,22 @@ The application will start at `http://localhost:8080`.
 
 ---
 
+## 🧪 How to Run Tests
+
+This project includes a comprehensive suite of unit and integration tests (JUnit 5, Mockito, Spring Boot Test, MockMvc) covering controllers, services, security, exceptions, and scheduled tasks.
+
+### Run All Tests via Maven
+```bash
+mvn test
+```
+
+### Run Tests via IDE (IntelliJ IDEA / Eclipse / VS Code)
+- Open the project in your favorite IDE.
+- Navigate to the `src/test/java` directory.
+- Right-click `com.mamikos.backend` package or individual test classes (e.g., `KostServiceImplTest`, `AuthControllerTest`, `CreditScheduleServiceTest`) and select **Run Tests**.
+
+---
+
 ## 📖 API Documentation & Swagger UI
 Interactive API documentation is available via Swagger UI once the application is running:
 - **Swagger UI**: [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
@@ -154,52 +170,4 @@ Interactive API documentation is available via Swagger UI once the application i
   ```
 - **User Inquiries**: `GET /api/inquiries/my-inquiries` (Requires Bearer Token)
 
-
-
-## 🧪 API Endpoints Reference
-
-### 1. Auth API (`/api/auth`)
-- **Register**: `POST /api/auth/register`
-  ```json
-  {
-    "username": "budi_owner",
-    "email": "budi@owner.com",
-    "password": "password123",
-    "role": "OWNER"
-  }
-  ```
-- **Login**: `POST /api/auth/login`
-  ```json
-  {
-    "usernameOrEmail": "budi_owner",
-    "password": "password123"
-  }
-  ```
-
-### 2. Kost API (`/api/kosts`)
-- **Create Kost (Owner)**: `POST /api/kosts` (Requires Bearer Token)
-  ```json
-  {
-    "name": "Kost Melati Indah",
-    "location": "Jakarta Selatan",
-    "price": 1500000.0,
-    "description": "Kost nyaman dekat stasiun",
-    "roomCount": 10
-  }
-  ```
-- **Search Kost (Public)**: `GET /api/kosts/search?location=Jakarta&sort=asc`
-- **Kost Detail (Public)**: `GET /api/kosts/{id}`
-- **Owner Kosts**: `GET /api/kosts/owner/my-kosts` (Requires Owner Token)
-- **Update Kost**: `PUT /api/kosts/{id}` (Owner)
-- **Delete Kost**: `DELETE /api/kosts/{id}` (Owner)
-
-### 3. Inquiry API (`/api/inquiries`)
-- **Ask Room Availability (-5 credits)**: `POST /api/inquiries` (Requires Regular/Premium User Token)
-  ```json
-  {
-    "kostId": 1,
-    "message": "Apakah kamar masih tersedia untuk bulan depan?"
-  }
-  ```
-- **User Inquiries**: `GET /api/inquiries/my-inquiries`
 
