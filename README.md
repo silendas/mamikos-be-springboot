@@ -2,7 +2,24 @@
 
 Production-ready Spring Boot backend for the Mamikos Technical Test.
 
-## Features & Requirements Implemented
+---
+
+## 🛠️ Tech Stack & Versions
+
+| Technology | Version | Description |
+| :--- | :--- | :--- |
+| **Java** | `21` | Programming Language |
+| **Spring Boot** | `3.3.0` | Backend Framework |
+| **Spring Security** | `6.3.0` | Authentication & Authorization |
+| **Spring Data JPA** | `3.3.0` | ORM / Database Access |
+| **JJWT (JSON Web Token)** | `0.12.5` | Token-based Auth |
+| **SpringDoc OpenAPI** | `2.5.0` | API Documentation & Swagger UI |
+| **PostgreSQL** | Latest | Relational Database |
+| **Maven** | `3.8+` | Build Tool & Dependency Management |
+
+---
+
+## 📋 Features & Requirements Implemented
 1. **User Roles & Credits**:
    - `REGULAR_USER`: Gets 20 initial credits.
    - `PREMIUM_USER`: Gets 40 initial credits.
@@ -26,32 +43,120 @@ Production-ready Spring Boot backend for the Mamikos Technical Test.
 
 ---
 
-## Prerequisites
-- Java 21+
-- Maven 3.8+
-- PostgreSQL Database
+## ⚙️ Prerequisites
+- **Java JDK 21** installed (`java -version`)
+- **Maven 3.8+** (or use included Maven Wrapper `mvnw`)
+- **PostgreSQL Database** running locally or remotely
 
 ---
 
-## Configuration
-Update database credentials in `src/main/resources/application.properties`:
-```properties
-spring.datasource.url=jdbc:postgresql://localhost:5432/mamikos_db
-spring.datasource.username=postgres
-spring.datasource.password=postgres
+## 🚀 Step-by-Step Installation & Running Guide
+
+### 1. Clone the Repository
+```bash
+git clone https://github.com/your-username/mamikos-be-springboot.git
+cd mamikos-be-springboot
 ```
 
----
+### 2. Environment Configuration
+Copy `.env.example` to `.env` and configure your local database credentials (e.g. `DB_PASSWORD=admin` or your actual PostgreSQL password):
+```bash
+cp .env.example .env
+```
 
-## Build & Run
+Configure your credentials in `.env`:
+```env
+DB_URL=jdbc:postgresql://localhost:5432/mamikos_db
+DB_USERNAME=postgres
+DB_PASSWORD=admin
+DB_DDL_AUTO=update
+DB_SHOW_SQL=true
+JWT_SECRET=404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+JWT_EXPIRATION=86400000
+```
+
+### 3. Setup PostgreSQL Database
+Create a PostgreSQL database named `mamikos_db`:
+```sql
+CREATE DATABASE mamikos_db;
+```
+
+### 4. Build the Application
+Using Maven:
 ```bash
 mvn clean install
+```
+
+### 5. Run the Application
+```bash
+# Windows / Linux / macOS
 mvn spring-boot:run
 ```
 
+The application will start at `http://localhost:8080`.
+
 ---
 
-## API Endpoints Documentation
+## 📖 API Documentation & Swagger UI
+Interactive API documentation is available via Swagger UI once the application is running:
+- **Swagger UI**: [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
+- **OpenAPI JSON**: `http://localhost:8080/v3/api-docs`
+
+---
+
+## 🧪 API Endpoints Reference
+
+### 1. Auth API (`/api/auth`)
+- **Register**: `POST /api/auth/register`
+  ```json
+  {
+    "username": "budi_owner",
+    "email": "budi@owner.com",
+    "password": "password123",
+    "role": "OWNER"
+  }
+  ```
+- **Login**: `POST /api/auth/login`
+  ```json
+  {
+    "usernameOrEmail": "budi_owner",
+    "password": "password123"
+  }
+  ```
+- **Get Profile**: `GET /api/auth/me` (Requires Bearer Token)
+- **Update Profile**: `PUT /api/auth/me` (Requires Bearer Token)
+- **Change Password**: `PUT /api/auth/password` (Requires Bearer Token)
+
+### 2. Kost API (`/api/kosts`)
+- **Create Kost (Owner)**: `POST /api/kosts` (Requires Bearer Token)
+  ```json
+  {
+    "name": "Kost Melati Indah",
+    "location": "Jakarta Selatan",
+    "price": 1500000.0,
+    "description": "Kost nyaman dekat stasiun",
+    "roomCount": 10
+  }
+  ```
+- **Search Kost (Public)**: `GET /api/kosts/search?location=Jakarta&sort=asc`
+- **Kost Detail (Public)**: `GET /api/kosts/{id}`
+- **Owner Kosts**: `GET /api/kosts/owner/my-kosts` (Requires Owner Token)
+- **Update Kost**: `PUT /api/kosts/{id}` (Owner)
+- **Delete Kost**: `DELETE /api/kosts/{id}` (Owner)
+
+### 3. Inquiry API (`/api/inquiries`)
+- **Ask Room Availability (-5 credits)**: `POST /api/inquiries` (Requires Regular/Premium User Token)
+  ```json
+  {
+    "kostId": 1,
+    "message": "Apakah kamar masih tersedia untuk bulan depan?"
+  }
+  ```
+- **User Inquiries**: `GET /api/inquiries/my-inquiries` (Requires Bearer Token)
+
+
+
+## 🧪 API Endpoints Reference
 
 ### 1. Auth API (`/api/auth`)
 - **Register**: `POST /api/auth/register`
@@ -97,3 +202,4 @@ mvn spring-boot:run
   }
   ```
 - **User Inquiries**: `GET /api/inquiries/my-inquiries`
+
